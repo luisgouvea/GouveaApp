@@ -27,7 +27,7 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     @Override
     protected void onStop() {
         super.onStop();
-        stopLoaderCustom(false);
+        //stopLoaderCustom(false);
     }
 
     @Override

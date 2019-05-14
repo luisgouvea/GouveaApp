@@ -58,7 +58,7 @@ public class CheckOrderBaseActivity extends BaseActivity
     @Override
     protected void onStop() {
         super.onStop();
-        stopLoaderCustom(false);
+        //stopLoaderCustom(false);
     }
 
     @Override
@@ -153,6 +153,8 @@ public class CheckOrderBaseActivity extends BaseActivity
                 //tenho em si o numero do orcamento
                 //4930
                 //faz o request
+                addSingleSale(numberOrder);
+                startLoaderRequest();
             } else {
                 //preencha corretamente o campo
                 dialogNumberOrder.show();
@@ -160,18 +162,30 @@ public class CheckOrderBaseActivity extends BaseActivity
         }
     }
 
-    public void addSingleSale() {
+    public void addSingleSale(String numberOrder) {
         SingleSaleAddRequest singleSaleAddRequest = new SingleSaleAddRequest(callback);
         singleSaleAddRequest.addSingleSale(20.3, 3);
     }
 
     @Override
     public void requestSingleSaleAddSuccess(SingleSaleModel authenticationRequest) {
-
+        stopLoaderRequest();
     }
 
     @Override
     public void requestSingleSaleAddFailed(ResponseAPIModel errorResponseAPI) {
+        stopLoaderRequest();
+    }
 
+    private void startLoaderRequest() {
+        if (progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+    }
+
+    private void stopLoaderRequest() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 }
