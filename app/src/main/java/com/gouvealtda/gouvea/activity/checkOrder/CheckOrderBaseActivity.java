@@ -14,17 +14,23 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.gouvealtda.gouvea.BaseActivity;
+import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
+import com.gouvealtda.gouvea.model.ResponseAPIModel;
+import com.gouvealtda.gouvea.model.SingleSaleModel;
+import com.gouvealtda.gouvea.services.singleSale.SingleSaleAddCallback;
+import com.gouvealtda.gouvea.services.singleSale.SingleSaleAddRequest;
 
 public class CheckOrderBaseActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SingleSaleAddCallback {
 
     private Button buttonBeginCheckOrder;
     private EditText editTextNumerOrder;
 
     private ProgressDialog progressDialog;
     private AlertDialog.Builder dialogNumberOrder;
+
+    private SingleSaleAddCallback callback = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,5 +158,20 @@ public class CheckOrderBaseActivity extends BaseActivity
                 dialogNumberOrder.show();
             }
         }
+    }
+
+    public void addSingleSale() {
+        SingleSaleAddRequest singleSaleAddRequest = new SingleSaleAddRequest(callback);
+        singleSaleAddRequest.addSingleSale(20.3, 3);
+    }
+
+    @Override
+    public void requestSingleSaleAddSuccess(SingleSaleModel authenticationRequest) {
+
+    }
+
+    @Override
+    public void requestSingleSaleAddFailed(ResponseAPIModel errorResponseAPI) {
+
     }
 }

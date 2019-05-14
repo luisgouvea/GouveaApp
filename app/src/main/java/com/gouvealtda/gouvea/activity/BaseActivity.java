@@ -1,4 +1,4 @@
-package com.gouvealtda.gouvea;
+package com.gouvealtda.gouvea.activity;
 
 import android.app.Activity;
 import android.content.Context;
