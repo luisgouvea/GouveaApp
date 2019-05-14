@@ -1,5 +1,7 @@
-package com.gouvealtda.gouvea;
+package com.gouvealtda.gouvea.activity.checkOrder;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -12,11 +14,17 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class MainActivity extends BaseActivity
+import com.gouvealtda.gouvea.BaseActivity;
+import com.gouvealtda.gouvea.R;
+
+public class CheckOrderBaseActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private Button buttonBeginCheckOrder;
     private EditText editTextNumerOrder;
+
+    private ProgressDialog progressDialog;
+    private AlertDialog.Builder dialogNumberOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +60,22 @@ public class MainActivity extends BaseActivity
         super.initialInterfaceActivity();
         this.setInterfacesFindView();
         this.setHandlerInterface();
-        //super.initialLoaderCustomUtil(constraintLayoutAddChargeActivity, relativeLayoutLoaderCustom);
     }
 
     @Override
     public void setInterfacesFindView() {
         buttonBeginCheckOrder = findViewById(R.id.btnBeginCheckOrder);
         editTextNumerOrder = findViewById(R.id.editTextNumerOrder);
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Ops");
+        progressDialog.setMessage("Não foi encontrado o orçamento");
+        progressDialog.setCancelable(false);
+
+        dialogNumberOrder = new AlertDialog.Builder(getContext());
+        dialogNumberOrder.setMessage("Número de orçamento inválido")
+                .setTitle("Ops, algo errado.");
+        dialogNumberOrder.setPositiveButton("OK", null);
     }
 
     @Override
@@ -119,8 +136,21 @@ public class MainActivity extends BaseActivity
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btnBeginCheckOrder) {
-            //nova tela
+            checkFieldNumberOrder();
         }
+    }
 
+    private void checkFieldNumberOrder() {
+        if (editTextNumerOrder != null) {
+            String numberOrder = editTextNumerOrder.getText().toString();
+            if (!numberOrder.isEmpty() && numberOrder.length() > 0 && !numberOrder.equals("")) {
+                //tenho em si o numero do orcamento
+                //4930
+                //faz o request
+            } else {
+                //preencha corretamente o campo
+                dialogNumberOrder.show();
+            }
+        }
     }
 }
