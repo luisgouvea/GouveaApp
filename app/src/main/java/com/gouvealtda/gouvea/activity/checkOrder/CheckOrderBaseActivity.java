@@ -18,11 +18,11 @@ import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
 import com.gouvealtda.gouvea.model.ResponseAPIModel;
 import com.gouvealtda.gouvea.model.SingleSaleModel;
-import com.gouvealtda.gouvea.services.singleSale.SingleSaleAddCallback;
-import com.gouvealtda.gouvea.services.singleSale.SingleSaleAddRequest;
+import com.gouvealtda.gouvea.services.order.get.GetOrderCallback;
+import com.gouvealtda.gouvea.services.order.get.GetOrderRequest;
 
 public class CheckOrderBaseActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SingleSaleAddCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GetOrderCallback {
 
     private Button buttonBeginCheckOrder;
     private EditText editTextNumerOrder;
@@ -30,7 +30,7 @@ public class CheckOrderBaseActivity extends BaseActivity
     private ProgressDialog progressDialog;
     private AlertDialog.Builder dialogNumberOrder;
 
-    private SingleSaleAddCallback callback = this;
+    private GetOrderCallback callback = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,18 +163,8 @@ public class CheckOrderBaseActivity extends BaseActivity
     }
 
     public void addSingleSale(String numberOrder) {
-        SingleSaleAddRequest singleSaleAddRequest = new SingleSaleAddRequest(callback);
-        singleSaleAddRequest.addSingleSale(20.3, 3);
-    }
-
-    @Override
-    public void requestSingleSaleAddSuccess(SingleSaleModel authenticationRequest) {
-        stopLoaderRequest();
-    }
-
-    @Override
-    public void requestSingleSaleAddFailed(ResponseAPIModel errorResponseAPI) {
-        stopLoaderRequest();
+        GetOrderRequest getOrderRequest = new GetOrderRequest(callback);
+        getOrderRequest.getOrderRequest(numberOrder);
     }
 
     private void startLoaderRequest() {
@@ -187,5 +177,15 @@ public class CheckOrderBaseActivity extends BaseActivity
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void getOrderCallbackSuccess(SingleSaleModel authenticationRequest) {
+
+    }
+
+    @Override
+    public void getOrderCallbackFail(ResponseAPIModel errorResponseAPI) {
+
     }
 }

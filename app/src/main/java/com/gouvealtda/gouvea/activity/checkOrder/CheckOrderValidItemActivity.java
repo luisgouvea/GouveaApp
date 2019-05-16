@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.zxing.Result;
 import com.gouvealtda.gouvea.activity.BaseActivity;
@@ -17,7 +18,11 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
 
     private Button btnActiveCamera;
     private Button btnFinishedItem;
+    private EditText editTextIdBarcode;
+    private EditText editTextQtdItem;
+
     private ZXingScannerView scannerView;
+    public static String barcode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,9 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
     public void onStart() {
         super.onStart();
         this.initialInterfaceActivity();
+        if (!barcode.equals("")) {
+            editTextIdBarcode.setText(barcode);
+        }
     }
 
     @Override
@@ -48,6 +56,8 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
     public void setInterfacesFindView() {
         btnActiveCamera = findViewById(R.id.btnActiveCamera);
         btnFinishedItem = findViewById(R.id.btnFinishedItem);
+        editTextIdBarcode = findViewById(R.id.editTextIdBarcode);
+        editTextQtdItem = findViewById(R.id.editTextQtdItem);
     }
 
     @Override
@@ -62,7 +72,7 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
         if (id == R.id.btnActiveCamera) {
             //abre a camera
 
-            Intent intentRecoverPassword = new Intent(getContext(),SimpleScannerActivity.class);
+            Intent intentRecoverPassword = new Intent(getContext(), SimpleScannerActivity.class);
 
             startActivity(intentRecoverPassword); // Start intent without transitions
 

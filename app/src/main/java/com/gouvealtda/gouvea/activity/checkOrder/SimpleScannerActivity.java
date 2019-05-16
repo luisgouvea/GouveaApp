@@ -36,8 +36,10 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
         // Do something with the result here
         Log.v("fd", rawResult.getText()); // Prints scan results
         Log.v("fdsf", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
-
         // If you would like to resume scanning, call this method below:
         mScannerView.resumeCameraPreview(this);
+
+        CheckOrderValidItemActivity.barcode = rawResult.getText();
+        SimpleScannerActivity.super.onBackPressed();
     }
 }
