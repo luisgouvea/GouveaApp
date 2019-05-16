@@ -2,6 +2,7 @@ package com.gouvealtda.gouvea.activity.checkOrder;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,8 +17,8 @@ import android.widget.EditText;
 
 import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
+import com.gouvealtda.gouvea.model.ListItemOrder;
 import com.gouvealtda.gouvea.model.ResponseAPIModel;
-import com.gouvealtda.gouvea.model.SingleSaleModel;
 import com.gouvealtda.gouvea.services.order.get.GetOrderCallback;
 import com.gouvealtda.gouvea.services.order.get.GetOrderRequest;
 
@@ -58,7 +59,14 @@ public class CheckOrderBaseActivity extends BaseActivity
     @Override
     protected void onStop() {
         super.onStop();
+        stopLoaderRequest();
         //stopLoaderCustom(false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLoaderRequest();
     }
 
     @Override
@@ -73,7 +81,7 @@ public class CheckOrderBaseActivity extends BaseActivity
         buttonBeginCheckOrder = findViewById(R.id.btnBeginCheckOrder);
         editTextNumerOrder = findViewById(R.id.editTextNumerOrder);
 
-        progressDialog = new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Ops");
         progressDialog.setMessage("Não foi encontrado o orçamento");
         progressDialog.setCancelable(false);
@@ -153,8 +161,8 @@ public class CheckOrderBaseActivity extends BaseActivity
                 //tenho em si o numero do orcamento
                 //4930
                 //faz o request
-                addSingleSale(numberOrder);
                 startLoaderRequest();
+                getOrderRequest(numberOrder);
             } else {
                 //preencha corretamente o campo
                 dialogNumberOrder.show();
@@ -162,7 +170,7 @@ public class CheckOrderBaseActivity extends BaseActivity
         }
     }
 
-    public void addSingleSale(String numberOrder) {
+    public void getOrderRequest(String numberOrder) {
         GetOrderRequest getOrderRequest = new GetOrderRequest(callback);
         getOrderRequest.getOrderRequest(numberOrder);
     }
@@ -180,12 +188,21 @@ public class CheckOrderBaseActivity extends BaseActivity
     }
 
     @Override
-    public void getOrderCallbackSuccess(SingleSaleModel authenticationRequest) {
-
+    public void getOrderCallbackSuccess(ListItemOrder listItemOrder) {
+        stopLoaderRequest();
+        checkResponseAPI(listItemOrder);
     }
 
     @Override
     public void getOrderCallbackFail(ResponseAPIModel errorResponseAPI) {
+        stopLoaderRequest();
+    }
 
+    private void checkResponseAPI(ListItemOrder listItemOrder) {
+        if (listItemOrder != null) {
+            CheckOrderValidationActivity.listItemOrder = listItemOrder;
+            Intent intent = new Intent(this, CheckOrderValidationActivity.class);
+            startActivity(intent);
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,6 +53,17 @@ public class LibraryUtil {
             return false;
         }
         return true;
+    }
+
+    /*
+     * IsTextFieldEmpty
+     * Verify whether text field is empty or not
+     **/
+    public static boolean IsTextFieldEmpty(EditText editText) {
+
+        String input = editText.getText().toString().trim();
+        return input.length() == 0;
+
     }
 
     public static Boolean checkTypeResponseAPI (Object object) {
