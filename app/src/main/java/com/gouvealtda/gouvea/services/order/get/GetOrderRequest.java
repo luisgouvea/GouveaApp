@@ -26,8 +26,9 @@ public class GetOrderRequest {
         ArrayList<ItemOrder> listItens = new ArrayList<>();
         ItemOrder itemOrder = new ItemOrder();
 
-        itemOrder.setBarcode("123");
-        itemOrder.setQtd("1");
+        itemOrder.setBarcode("7859459I4");
+        itemOrder.setQtd("109");
+        itemOrder.setDescription("ALMOFADA PARA CARIMBO AZUL");
 
         listItens.add(itemOrder);
 
