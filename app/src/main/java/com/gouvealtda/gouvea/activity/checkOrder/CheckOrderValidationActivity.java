@@ -45,7 +45,7 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
         super.onStart();
         this.initialInterfaceActivity();
         CheckOrderValidItemActivity.listItemOrder = this.listItemOrder;
-        checkOrderCache();
+        //checkOrderCache();
         buildRecyclerView();
     }
 
@@ -140,16 +140,26 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.btnAddItem) {
+       if (id == R.id.fab) {
             //open form
             Intent intent = new Intent(this, CheckOrderValidItemActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.btnValidationOrder) {
-            // valida o orcamento
-        } else if (id == R.id.fab) {
-            //open form
-            Intent intent = new Intent(this, CheckOrderValidItemActivity.class);
-            startActivity(intent);
+            //startActivity(intent);
+           startActivityForResult(intent,1);
         }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                buildRecyclerView();
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        listItemOrderCurrent = new ArrayList<>();
+        finish();
     }
 }

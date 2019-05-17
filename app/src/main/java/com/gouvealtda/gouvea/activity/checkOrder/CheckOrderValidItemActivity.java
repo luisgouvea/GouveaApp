@@ -152,17 +152,11 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
                 if (CheckOrderValidationActivity.getListItemOrderCurrent() == null) {
                     CheckOrderValidationActivity.listItemOrderCurrent = new ArrayList<>();
                 }
-
                 CheckOrderValidationActivity.listItemOrderCurrent.add(itemOrder);
-
-                String listString = LibraryUtil.objectToString(CheckOrderValidationActivity.listItemOrderCurrent);
-
-                LibraryUtil.SetPreference(CheckOrderBaseActivity.numberOrder, listString, CheckOrderValidItemActivity.this); // Set authinfo in shared preferences
-
-                Toast.makeText(getContext(), "Item correto!!!",
+                //saveListCurrentInCache();
+                Toast.makeText(getContext(), "Item separado corretamente!!!",
                         Toast.LENGTH_LONG).show();
-                //voltar
-                CheckOrderValidItemActivity.super.onBackPressed();
+                onBackPressed(); //voltar
             } else {
                 Toast.makeText(getContext(), "Quantidade incorreta. ATENÇÃO!!!",
                         Toast.LENGTH_LONG).show();
@@ -172,6 +166,19 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
                     Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, CheckOrderValidationActivity.class);
+        setResult(-1, intent);
+        finish();
+    }
+
+    private void saveListCurrentInCache() {
+        String listString = LibraryUtil.objectToString(CheckOrderValidationActivity.listItemOrderCurrent);
+
+        LibraryUtil.SetPreference(CheckOrderBaseActivity.numberOrder, listString, CheckOrderValidItemActivity.this); // Set authinfo in shared preferences
     }
 
     /*
