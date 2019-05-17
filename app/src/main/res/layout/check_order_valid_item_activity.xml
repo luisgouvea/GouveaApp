@@ -44,15 +44,20 @@
                     android:digits="1234567890" />
 
                 <Button
-                    android:id="@+id/btnActiveCamera"
+                    android:id="@+id/btnImportBarcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="camera"/>
+                    android:text="Importar" />
             </LinearLayout>
-
-
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnActiveCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Câmera"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"/>
 
 
         <LinearLayout

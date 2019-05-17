@@ -29,12 +29,16 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.checkOrder.CheckOrderValidationActivity"
-            android:label="Validação do Orçamento"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Validação do orçamento"
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".activity.checkOrder.CheckOrderValidItemActivity"
-            android:label="Validação do Item"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Validação do item"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".activity.checkOrder.CheckOrderChooseBarcodeActivity"
+            android:label="Escolha um item"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

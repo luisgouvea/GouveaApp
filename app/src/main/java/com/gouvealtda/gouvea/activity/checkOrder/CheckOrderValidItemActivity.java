@@ -1,5 +1,6 @@
 package com.gouvealtda.gouvea.activity.checkOrder;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,7 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
      */
     private Button btnActiveCamera;
     private Button btnFinishedItem;
+    private Button btnImportBarcode;
     private EditText editTextBarcode;
     private EditText editTextQtdItem;
 
@@ -62,6 +64,7 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
     @Override
     public void setInterfacesFindView() {
         btnActiveCamera = findViewById(R.id.btnActiveCamera);
+        btnImportBarcode = findViewById(R.id.btnImportBarcode);
         btnFinishedItem = findViewById(R.id.btnFinishedItem);
         editTextBarcode = findViewById(R.id.editTextBarcode);
         editTextQtdItem = findViewById(R.id.editTextQtdItem);
@@ -71,6 +74,7 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
     public void setHandlerInterface() {
         btnActiveCamera.setOnClickListener(this);
         btnFinishedItem.setOnClickListener(this);
+        btnImportBarcode.setOnClickListener(this);
     }
 
     @Override
@@ -83,16 +87,31 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
 
             startActivity(intentRecoverPassword); // Start intent without transitions
 
+        } else if (id == R.id.btnImportBarcode) {
+            // importar algum codigo de barras dentro do app
+            clickBtnImportBarcode();
         } else if (id == R.id.btnFinishedItem) {
             // valida o item
             clickBtnValideItem();
         }
     }
 
+
+    public void clickBtnImportBarcode() {
+        //open dialog
+        openActivityChooseBarcode();
+    }
+
     public void clickBtnValideItem() {
         if (fieldsFormFilledAndOk()) {
             executeValidItem();
         }
+    }
+
+    private void openActivityChooseBarcode() {
+        Intent intentRecoverPassword = new Intent(getContext(), CheckOrderChooseBarcodeActivity.class);
+
+        startActivity(intentRecoverPassword);
     }
 
     private Boolean fieldsFormFilledAndOk() {
@@ -107,7 +126,7 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
                 Toast.makeText(this, "O campo Quantidade deve ser preenchido corretamente.",
                         Toast.LENGTH_LONG).show();
 
-            //} else if (LibraryUtil.IsTextFieldEmpty(editTextBarcode) && barcode.length() <= 11) {
+                //} else if (LibraryUtil.IsTextFieldEmpty(editTextBarcode) && barcode.length() <= 11) {
             } else if (LibraryUtil.IsTextFieldEmpty(editTextBarcode) && barcode.length() <= 0) {
                 Toast.makeText(this, "O campo Código de Barras deve ser preenchido corretamente.",
                         Toast.LENGTH_LONG).show();
@@ -127,7 +146,7 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
 
         ItemOrder itemOrder = checkBarcodeExits(barcode);
 
-        if ( itemOrder != null) { // encontrou na lista
+        if (itemOrder != null) { // encontrou na lista
             if (qtdItem.equals(itemOrder.getQtd())) {
                 // quatidade bateu
                 if (CheckOrderValidationActivity.getListItemOrderCurrent() == null) {
