@@ -1,6 +1,8 @@
 package com.gouvealtda.gouvea.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
@@ -72,6 +74,47 @@ public class LibraryUtil {
         } else {
             return true;
         }
+    }
+
+    public static String objectToString(Object object) {
+        Gson gson = new Gson();
+        return gson.toJson(object);
+    }
+
+    /*
+     * SetPreference
+     * Set new preference in shared preference
+     * */
+    public static void SetPreference(String name, String data, Activity activity){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("Gouvea", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(name,data);
+        editor.commit();
+
+    }
+
+    /*
+     * GetPreference
+     * Get preference in shared preference
+     * */
+    public static String GetPreference(String name, Activity activity){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("Gouvea", activity.MODE_PRIVATE);
+
+        return sharedPreferences.getString(name, null);
+    }
+
+    /*
+     * RemovePreference
+     * Remove preference in shared preference
+     * */
+    public static void RemovePreference(String name, Activity activity){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("Gouvea", activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.remove(name);
+        editor.commit();
+
     }
 
     public static boolean stringIsNull(String stringTarget) {

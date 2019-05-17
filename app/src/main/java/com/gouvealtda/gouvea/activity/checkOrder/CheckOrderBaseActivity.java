@@ -32,6 +32,7 @@ public class CheckOrderBaseActivity extends BaseActivity
     private AlertDialog.Builder dialogNumberOrder;
 
     private GetOrderCallback callback = this;
+    public static String numberOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +162,7 @@ public class CheckOrderBaseActivity extends BaseActivity
                 //tenho em si o numero do orcamento
                 //4930
                 //faz o request
+                this.numberOrder = numberOrder;
                 startLoaderRequest();
                 getOrderRequest(numberOrder);
             } else {

@@ -1,8 +1,11 @@
 package com.gouvealtda.gouvea.activity.checkOrder;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,18 +13,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
 import com.gouvealtda.gouvea.model.ItemOrder;
 import com.gouvealtda.gouvea.model.ListItemOrder;
 import com.gouvealtda.gouvea.recyclerView.listItemOrder.ListItemOrderAdapter;
+import com.gouvealtda.gouvea.util.LibraryUtil;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CheckOrderValidationActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btnAddItem;
-    private Button btnValidationOrder;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
 
@@ -40,12 +45,8 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
         super.onStart();
         this.initialInterfaceActivity();
         CheckOrderValidItemActivity.listItemOrder = this.listItemOrder;
-        //checkOrderCache();
-        if (listItemOrderCurrent != null && listItemOrderCurrent.size() > 0) {
-            ListItemOrderAdapter listItemOrderAdapter = new ListItemOrderAdapter(getContext(), listItemOrderCurrent);
-            recyclerView.setAdapter(listItemOrderAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        }
+        checkOrderCache();
+        buildRecyclerView();
     }
 
     @Override
@@ -55,7 +56,13 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     }
 
     private void checkOrderCache() {
-        //TODO: FAZER GET NA LISTA EM MEMORIA
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<ItemOrder>>() {
+        }.getType();
+        ArrayList<ItemOrder> listItemOrderCurrentCache = gson.fromJson(LibraryUtil.GetPreference(CheckOrderBaseActivity.numberOrder, CheckOrderValidationActivity.this), listType);
+        if (listItemOrderCurrentCache != null && listItemOrderCurrentCache.size() > 0) { // tem algo
+            openAlertDialogChooseImport(listItemOrderCurrentCache);
+        }
     }
 
     @Override
@@ -67,16 +74,12 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
 
     @Override
     public void setInterfacesFindView() {
-//        btnAddItem = findViewById(R.id.btnAddItem);
-//        btnValidationOrder = findViewById(R.id.btnValidationOrder);
         recyclerView = findViewById(R.id.idRecyclerView);
         fab = findViewById(R.id.fab);
     }
 
     @Override
     public void setHandlerInterface() {
-//        btnAddItem.setOnClickListener(this);
-//        btnValidationOrder.setOnClickListener(this);
         fab.setOnClickListener(this);
     }
 
@@ -104,6 +107,34 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
 
     public static ArrayList<ItemOrder> getListItemOrderCurrent() {
         return listItemOrderCurrent;
+    }
+
+    private void buildRecyclerView() {
+        if (listItemOrderCurrent != null && listItemOrderCurrent.size() > 0) {
+            ListItemOrderAdapter listItemOrderAdapter = new ListItemOrderAdapter(getContext(), listItemOrderCurrent);
+            recyclerView.setAdapter(listItemOrderAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
+    }
+
+    public void openAlertDialogChooseImport(final ArrayList<ItemOrder> listItemOrderCurrentCache) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setMessage("Esse orçamento não foi VALIDADO, deseja importar?");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                CheckOrderValidationActivity.listItemOrderCurrent = listItemOrderCurrentCache;
+                buildRecyclerView();
+            }
+        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+        alertDialog.show();
     }
 
     @Override

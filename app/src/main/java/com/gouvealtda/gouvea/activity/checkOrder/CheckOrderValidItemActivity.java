@@ -154,6 +154,11 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
                 }
 
                 CheckOrderValidationActivity.listItemOrderCurrent.add(itemOrder);
+
+                String listString = LibraryUtil.objectToString(CheckOrderValidationActivity.listItemOrderCurrent);
+
+                LibraryUtil.SetPreference(CheckOrderBaseActivity.numberOrder, listString, CheckOrderValidItemActivity.this); // Set authinfo in shared preferences
+
                 Toast.makeText(getContext(), "Item correto!!!",
                         Toast.LENGTH_LONG).show();
                 //voltar
