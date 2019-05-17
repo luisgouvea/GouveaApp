@@ -26,18 +26,15 @@
         <activity
             android:name=".activity.checkOrder.SimpleScannerActivity"
             android:label="Codigo de barras"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.checkOrder.CheckOrderValidationActivity"
             android:label="Validação do Orçamento"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.checkOrder.CheckOrderValidItemActivity"
             android:label="Validação do Item"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
