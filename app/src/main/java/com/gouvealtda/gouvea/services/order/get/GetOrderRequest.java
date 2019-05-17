@@ -26,11 +26,20 @@ public class GetOrderRequest {
         ArrayList<ItemOrder> listItens = new ArrayList<>();
         ItemOrder itemOrder = new ItemOrder();
 
-        itemOrder.setBarcode("7859459I4");
-        itemOrder.setQtd("109");
+        itemOrder.setBarcode("123");
+        itemOrder.setQtd("1");
         itemOrder.setDescription("ALMOFADA PARA CARIMBO AZUL");
 
         listItens.add(itemOrder);
+
+
+        ItemOrder itemOrder2 = new ItemOrder();
+        itemOrder2.setBarcode("321");
+        itemOrder2.setQtd("1");
+        itemOrder2.setDescription("TECLADO USB");
+
+        listItens.add(itemOrder2);
+
 
         listItemOrder.setListItemOder(listItens);
 

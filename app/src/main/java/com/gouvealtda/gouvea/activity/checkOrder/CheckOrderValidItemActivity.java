@@ -130,9 +130,11 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
         if ( itemOrder != null) { // encontrou na lista
             if (qtdItem.equals(itemOrder.getQtd())) {
                 // quatidade bateu
-                ArrayList<ItemOrder> listItemOrderCurrent = CheckOrderValidationActivity.getListItemOrderCurrent();
-                listItemOrderCurrent.add(itemOrder);
+                if (CheckOrderValidationActivity.getListItemOrderCurrent() == null) {
+                    CheckOrderValidationActivity.listItemOrderCurrent = new ArrayList<>();
+                }
 
+                CheckOrderValidationActivity.listItemOrderCurrent.add(itemOrder);
                 Toast.makeText(getContext(), "Item correto!!!",
                         Toast.LENGTH_LONG).show();
                 //voltar
