@@ -7,6 +7,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayoutRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -20,6 +21,23 @@
 
         </android.support.v7.widget.RecyclerView>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNoItens"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nenhum item adicionado!"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

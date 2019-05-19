@@ -1,6 +1,5 @@
 package com.gouvealtda.gouvea.activity.checkOrder;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -96,6 +95,12 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, CheckOrderValidationActivity.class);
+        setResult(-1, intent);
+        finish();
+    }
 
     public void clickBtnImportBarcode() {
         //open dialog
@@ -109,9 +114,19 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
     }
 
     private void openActivityChooseBarcode() {
-        Intent intentRecoverPassword = new Intent(getContext(), CheckOrderChooseBarcodeActivity.class);
+        Intent intent = new Intent(this, CheckOrderChooseItemActivity.class);
+        //startActivity(intent);
+        startActivityForResult(intent,1);
+    }
 
-        startActivity(intentRecoverPassword);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String barcodeChoosed = data.getStringExtra("barcodeChoose");
+                editTextBarcode.setText(barcodeChoosed);
+            }
+        }
     }
 
     private Boolean fieldsFormFilledAndOk() {
@@ -147,16 +162,8 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
         ItemOrder itemOrder = checkBarcodeExits(barcode);
 
         if (itemOrder != null) { // encontrou na lista
-            if (qtdItem.equals(itemOrder.getQtd())) {
-                // quatidade bateu
-                if (CheckOrderValidationActivity.getListItemOrderCurrent() == null) {
-                    CheckOrderValidationActivity.listItemOrderCurrent = new ArrayList<>();
-                }
-                CheckOrderValidationActivity.listItemOrderCurrent.add(itemOrder);
-                //saveListCurrentInCache();
-                Toast.makeText(getContext(), "Item separado corretamente!!!",
-                        Toast.LENGTH_LONG).show();
-                onBackPressed(); //voltar
+            if (qtdItem.equals(itemOrder.getQtd())) { // quatidade bateu
+                addItemInListCurrent(itemOrder);
             } else {
                 Toast.makeText(getContext(), "Quantidade incorreta. ATENÇÃO!!!",
                         Toast.LENGTH_LONG).show();
@@ -165,19 +172,26 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
             Toast.makeText(getContext(), "Código de barras não encontrado no orçamento. ATENÇÃO!!!",
                     Toast.LENGTH_LONG).show();
         }
-
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, CheckOrderValidationActivity.class);
-        setResult(-1, intent);
-        finish();
+    private void addItemInListCurrent(ItemOrder itemOrder) {
+        if (CheckOrderValidationActivity.getListItemOrderCurrent() == null) {
+            CheckOrderValidationActivity.listItemOrderCurrent = new ArrayList<>();
+        }
+        if (!itemAddedInListCurrent(itemOrder.getBarcode())) {
+            CheckOrderValidationActivity.listItemOrderCurrent.add(itemOrder);
+            //saveListCurrentInCache();
+            Toast.makeText(getContext(), "Item separado corretamente!!!",
+                    Toast.LENGTH_LONG).show();
+            onBackPressed(); //voltar
+        } else {
+            Toast.makeText(getContext(), "Item já foi validado, vá para o próximo!!!",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     private void saveListCurrentInCache() {
         String listString = LibraryUtil.objectToString(CheckOrderValidationActivity.listItemOrderCurrent);
-
         LibraryUtil.SetPreference(CheckOrderBaseActivity.numberOrder, listString, CheckOrderValidItemActivity.this); // Set authinfo in shared preferences
     }
 
@@ -196,5 +210,21 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
             }
         }
         return null;
+    }
+
+    /*
+     Verificar se o item em questao ja ta na lista CURRENT
+     */
+
+    private Boolean itemAddedInListCurrent(String barcode) {
+        ArrayList<ItemOrder> listItemCurrent = CheckOrderValidationActivity.getListItemOrderCurrent();
+        for (int i = 0; i <= listItemCurrent.size() - 1; i++) {
+            ItemOrder itemOrder = listItemCurrent.get(i);
+            if (itemOrder.getBarcode().equals(barcode)) {
+                // o item ja foi conferido pelo separador
+                return true;
+            }
+        }
+        return false;
     }
 }

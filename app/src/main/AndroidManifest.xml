@@ -36,8 +36,12 @@
             android:label="Validação do item"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".activity.checkOrder.CheckOrderChooseBarcodeActivity"
+            android:name=".activity.checkOrder.CheckOrderChooseItemActivity"
             android:label="Escolha um item"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".activity.prepareOrder.PrepareOrderForm"
+            android:label="Guardar item"
             android:theme="@style/AppTheme"></activity>
     </application>
 

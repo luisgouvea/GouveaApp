@@ -20,6 +20,10 @@ import retrofit2.Response;
 
 public class LibraryUtil {
 
+    /*
+    Preferences KEY
+     */
+    public static final String LIST_PREPARE_ITENS_ORDER = "listprepareitensorder";
 
     public static <T> T parseObjectToOtherObject(Object responseAPI, Class<T> classToParse) {
         Gson gSerializer = new GsonBuilder()

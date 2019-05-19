@@ -1,35 +1,29 @@
 package com.gouvealtda.gouvea.activity.checkOrder;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
 import com.gouvealtda.gouvea.model.ItemOrder;
 import com.gouvealtda.gouvea.model.ListItemOrder;
 import com.gouvealtda.gouvea.recyclerView.listItemOrder.ListItemOrderAdapter;
-import com.gouvealtda.gouvea.util.LibraryUtil;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CheckOrderValidationActivity extends BaseActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
-
+    private LinearLayout linearLayoutNoItens;
+    private LinearLayout linearLayoutRecyclerView;
 
     public static ListItemOrder listItemOrder;
     public static ArrayList<ItemOrder> listItemOrderCurrent;
@@ -64,6 +58,8 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     public void setInterfacesFindView() {
         recyclerView = findViewById(R.id.idRecyclerView);
         fab = findViewById(R.id.fab);
+        linearLayoutNoItens = findViewById(R.id.linearLayoutNoItens);
+        linearLayoutRecyclerView = findViewById(R.id.linearLayoutRecyclerView);
     }
 
     @Override
@@ -99,10 +95,23 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
 
     private void buildRecyclerView() {
         if (listItemOrderCurrent != null && listItemOrderCurrent.size() > 0) {
-            ListItemOrderAdapter listItemOrderAdapter = new ListItemOrderAdapter(getContext(), listItemOrderCurrent);
+            ListItemOrderAdapter listItemOrderAdapter = new ListItemOrderAdapter(listItemOrderCurrent);
             recyclerView.setAdapter(listItemOrderAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            showItensInList();
+        } else {
+            showLayoutNoItens();
         }
+    }
+
+    private void showItensInList() {
+        linearLayoutNoItens.setVisibility(View.GONE);
+        linearLayoutRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void showLayoutNoItens(){
+        linearLayoutNoItens.setVisibility(View.VISIBLE);
+        linearLayoutRecyclerView.setVisibility(View.GONE);
     }
 
     @Override
