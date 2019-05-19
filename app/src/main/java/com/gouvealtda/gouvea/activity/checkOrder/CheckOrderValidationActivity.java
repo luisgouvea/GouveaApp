@@ -44,8 +44,6 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     public void onStart() {
         super.onStart();
         this.initialInterfaceActivity();
-        CheckOrderValidItemActivity.listItemOrder = this.listItemOrder;
-        //checkOrderCache();
         buildRecyclerView();
     }
 
@@ -53,16 +51,6 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     protected void onStop() {
         super.onStop();
         //stopLoaderCustom(false);
-    }
-
-    private void checkOrderCache() {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<ItemOrder>>() {
-        }.getType();
-        ArrayList<ItemOrder> listItemOrderCurrentCache = gson.fromJson(LibraryUtil.GetPreference(CheckOrderBaseActivity.numberOrder, CheckOrderValidationActivity.this), listType);
-        if (listItemOrderCurrentCache != null && listItemOrderCurrentCache.size() > 0) { // tem algo
-            openAlertDialogChooseImport(listItemOrderCurrentCache);
-        }
     }
 
     @Override
@@ -115,26 +103,6 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
             recyclerView.setAdapter(listItemOrderAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
-    }
-
-    public void openAlertDialogChooseImport(final ArrayList<ItemOrder> listItemOrderCurrentCache) {
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setMessage("Esse orçamento não foi VALIDADO, deseja importar?");
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                CheckOrderValidationActivity.listItemOrderCurrent = listItemOrderCurrentCache;
-                buildRecyclerView();
-            }
-        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-            }
-        });
-        alertDialog.show();
     }
 
     @Override

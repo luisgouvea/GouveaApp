@@ -2,6 +2,7 @@ package com.gouvealtda.gouvea.activity.checkOrder;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +16,19 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
+import com.gouvealtda.gouvea.model.ItemOrder;
 import com.gouvealtda.gouvea.model.ListItemOrder;
 import com.gouvealtda.gouvea.model.ResponseAPIModel;
 import com.gouvealtda.gouvea.services.order.get.GetOrderCallback;
 import com.gouvealtda.gouvea.services.order.get.GetOrderRequest;
+import com.gouvealtda.gouvea.util.LibraryUtil;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class CheckOrderBaseActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GetOrderCallback {
@@ -189,6 +197,50 @@ public class CheckOrderBaseActivity extends BaseActivity
         }
     }
 
+    private void checkOrderCache() {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<ItemOrder>>() {
+        }.getType();
+        ArrayList<ItemOrder> listItemOrderCurrentCache = gson.fromJson(LibraryUtil.GetPreference(CheckOrderBaseActivity.numberOrder, CheckOrderBaseActivity.this), listType);
+        if (listItemOrderCurrentCache != null && listItemOrderCurrentCache.size() > 0) {
+            openAlertDialogChooseImport(listItemOrderCurrentCache); // tem algo
+        } else {
+            startValidationActivity();
+        }
+    }
+
+    public void openAlertDialogChooseImport(final ArrayList<ItemOrder> listItemOrderCurrentCache) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setMessage("Esse orçamento não foi VALIDADO, deseja importar?");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                CheckOrderValidationActivity.listItemOrderCurrent = listItemOrderCurrentCache;
+                startValidationActivity();
+            }
+        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void startValidationActivity() {
+        Intent intent = new Intent(this, CheckOrderValidationActivity.class);
+        startActivity(intent);
+    }
+
+    private void checkResponseAPI(ListItemOrder listItemOrder) {
+        if (listItemOrder != null) {
+            CheckOrderValidationActivity.listItemOrder = listItemOrder;
+            checkOrderCache();
+        }
+    }
+
     @Override
     public void getOrderCallbackSuccess(ListItemOrder listItemOrder) {
         stopLoaderRequest();
@@ -200,11 +252,4 @@ public class CheckOrderBaseActivity extends BaseActivity
         stopLoaderRequest();
     }
 
-    private void checkResponseAPI(ListItemOrder listItemOrder) {
-        if (listItemOrder != null) {
-            CheckOrderValidationActivity.listItemOrder = listItemOrder;
-            Intent intent = new Intent(this, CheckOrderValidationActivity.class);
-            startActivity(intent);
-        }
-    }
 }
