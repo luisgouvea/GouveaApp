@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/action_validation_order"
         android:orderInCategory="300"
-        android:title="User"
+        android:title="Validar orçamento"
         android:icon="@drawable/ic_check"
         app:showAsAction="ifRoom"></item>
 </menu>

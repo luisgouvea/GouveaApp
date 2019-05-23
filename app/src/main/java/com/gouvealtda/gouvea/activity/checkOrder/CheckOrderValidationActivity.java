@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.gouvealtda.gouvea.activity.BaseActivity;
 import com.gouvealtda.gouvea.R;
@@ -70,19 +71,27 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.validation_order, menu);
+        getMenuInflater().inflate(R.menu.menu_validation_order, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
+        if (id == R.id.action_validation_order) {
+            runValidationOrder();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void runValidationOrder() {
+        if (listItemOrderCurrent == null || listItemOrderCurrent.size() == 0) {
+            Toast.makeText(getContext(), "Ops, nenhum item para conferir",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            //run validation
+
+        }
     }
 
     public static ListItemOrder getListItemOrder() {
@@ -109,7 +118,7 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
         linearLayoutRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    private void showLayoutNoItens(){
+    private void showLayoutNoItens() {
         linearLayoutNoItens.setVisibility(View.VISIBLE);
         linearLayoutRecyclerView.setVisibility(View.GONE);
     }
@@ -117,18 +126,18 @@ public class CheckOrderValidationActivity extends BaseActivity implements View.O
     @Override
     public void onClick(View v) {
         int id = v.getId();
-       if (id == R.id.fab) {
+        if (id == R.id.fab) {
             //open form
             Intent intent = new Intent(this, CheckOrderValidItemActivity.class);
             //startActivity(intent);
-           startActivityForResult(intent,1);
+            startActivityForResult(intent, 1);
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 buildRecyclerView();
             }
         }
