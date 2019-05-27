@@ -22,35 +22,35 @@ public class GetOrderRequest {
     public void getOrderRequest(String numberOrder) {
 
 
-        ListItemOrder listItemOrder = new ListItemOrder();
-        ArrayList<ItemOrder> listItens = new ArrayList<>();
-        ItemOrder itemOrder = new ItemOrder();
-
-        itemOrder.setBarcode("123");
-        itemOrder.setQtd("1");
-        itemOrder.setDescription("ALMOFADA PARA CARIMBO AZUL");
-
-        listItens.add(itemOrder);
-
-
-        ItemOrder itemOrder2 = new ItemOrder();
-        itemOrder2.setBarcode("321");
-        itemOrder2.setQtd("1");
-        itemOrder2.setDescription("TECLADO USB");
-
-        listItens.add(itemOrder2);
-
-
-        listItemOrder.setListItemOder(listItens);
-
-        getOrderCallback.getOrderCallbackSuccess(listItemOrder);
-        //execute(numberOrder);
+//        ListItemOrder listItemOrder = new ListItemOrder();
+//        ArrayList<ItemOrder> listItens = new ArrayList<>();
+//        ItemOrder itemOrder = new ItemOrder();
+//
+//        itemOrder.setBarcode("123");
+//        itemOrder.setQtd("1");
+//        itemOrder.setDescription("ALMOFADA PARA CARIMBO AZUL");
+//
+//        listItens.add(itemOrder);
+//
+//
+//        ItemOrder itemOrder2 = new ItemOrder();
+//        itemOrder2.setBarcode("321");
+//        itemOrder2.setQtd("1");
+//        itemOrder2.setDescription("TECLADO USB");
+//
+//        listItens.add(itemOrder2);
+//
+//
+//        listItemOrder.setListItemOder(listItens);
+//
+//        getOrderCallback.getOrderCallbackSuccess(listItemOrder);
+        execute(numberOrder);
     }
 
     private void execute(String numberOrder) {
         OrderMethodsInterface orderMethodsInterface = InitialRetrofit.getRetrofitFeature().create(OrderMethodsInterface.class);
-        Call<ResponseAPIModel> call = orderMethodsInterface.getOrderByNumber(numberOrder);
-        call.enqueue(new Callback<ResponseAPIModel>() {
+        Call<ListItemOrder> call = orderMethodsInterface.getOrderByNumber(numberOrder);
+        call.enqueue(new Callback<ListItemOrder>() {
             @Override
             public void onResponse(Call<ListItemOrder> call, retrofit2.Response<ListItemOrder> response) {
                 ListItemOrder listItemOrder = LibraryUtil.parseObjectToOtherObject(response.body(), ListItemOrder.class);
@@ -58,7 +58,7 @@ public class GetOrderRequest {
             }
 
             @Override
-            public void onFailure(Call<ResponseAPIModel> call, Throwable t) {
+            public void onFailure(Call<ListItemOrder> call, Throwable t) {
                 getOrderCallback.getOrderCallbackFail(null);
             }
         });
