@@ -204,9 +204,11 @@ public class CheckOrderValidItemActivity extends BaseActivity implements View.On
         ArrayList<ItemOrder> listClippStore = listItemOrder.getListItemOder();
         for (int i = 0; i <= listClippStore.size() - 1; i++) {
             ItemOrder itemOrder = listClippStore.get(i);
-            if (itemOrder.getBarcode().equals(barcode)) {
-                // o barcode do orcamento foi separado
-                return itemOrder;
+            if (itemOrder.getBarcode() != null) {
+                if (itemOrder.getBarcode().equals(barcode)) {
+                    // o barcode do orcamento foi separado
+                    return itemOrder;
+                }
             }
         }
         return null;
