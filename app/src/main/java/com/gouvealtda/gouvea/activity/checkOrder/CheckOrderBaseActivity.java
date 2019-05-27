@@ -91,8 +91,8 @@ public class CheckOrderBaseActivity extends BaseActivity
         editTextNumerOrder = findViewById(R.id.editTextNumerOrder);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Ops");
-        progressDialog.setMessage("Não foi encontrado o orçamento");
+        progressDialog.setTitle("Aguarde");
+        progressDialog.setMessage("Por favor, estou buscando o seu orçamento!");
         progressDialog.setCancelable(false);
 
         dialogNumberOrder = new AlertDialog.Builder(getContext());

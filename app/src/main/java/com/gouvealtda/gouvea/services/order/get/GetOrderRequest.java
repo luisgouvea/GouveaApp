@@ -52,9 +52,8 @@ public class GetOrderRequest {
         Call<ResponseAPIModel> call = orderMethodsInterface.getOrderByNumber(numberOrder);
         call.enqueue(new Callback<ResponseAPIModel>() {
             @Override
-            public void onResponse(Call<ResponseAPIModel> call, retrofit2.Response<ResponseAPIModel> response) {
-                Object object = LibraryUtil.parseResponseAPI(response, ListItemOrder.class); // Response API ou SingleSaleModel
-                ListItemOrder listItemOrder = LibraryUtil.parseObjectToOtherObject(object, ListItemOrder.class);
+            public void onResponse(Call<ListItemOrder> call, retrofit2.Response<ListItemOrder> response) {
+                ListItemOrder listItemOrder = LibraryUtil.parseObjectToOtherObject(response.body(), ListItemOrder.class);
                 getOrderCallback.getOrderCallbackSuccess(listItemOrder);
             }
 
